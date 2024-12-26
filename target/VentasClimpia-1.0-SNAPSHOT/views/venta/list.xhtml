@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition template="/templates/template.xhtml">
+        <ui:define name="content">
+            <div class="card">
+                <h2>Gestión de Ventas</h2>
+                <h:form id="ventasForm">
+                    <p:panel header="Ventas">
+                        <p:toolbar>
+                            <p:toolbarGroup>
+                                <p:commandButton value="Nueva Venta" 
+                                               icon="pi pi-plus"
+                                               action="/views/venta/create?faces-redirect=true"/>
+                            </p:toolbarGroup>
+                            <p:toolbarGroup align="right">
+                                <p:calendar value="#{ventaController.searchDate}" pattern="dd/MM/yyyy"/>
+                                <p:commandButton value="Buscar"
+                                               icon="pi pi-search"
+                                               actionListener="#{ventaController.searchByDate}"
+                                               update="ventasTable"/>
+                            </p:toolbarGroup>
+                        </p:toolbar>
+
+                        <p:dataTable id="ventasTable" 
+                                   var="venta" 
+                                   value="#{ventaController.ventas}"
+                                   paginator="true"
+                                   rows="10"
+                                   paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                   currentPageReportTemplate="Mostrando {startRecord}-{endRecord} de {totalRecords} registros">
+
+                            <p:column headerText="ID">
+                                <h:outputText value="#{venta.id}"/>
+                            </p:column>
+
+                            <p:column headerText="Fecha">
+                                <h:outputText value="#{venta.fecha}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column headerText="Cliente">
+                                <h:outputText value="#{venta.cliente.nombre}"/>
+                            </p:column>
+
+                            <p:column headerText="Total">
+                                <h:outputText value="#{venta.total}">
+                                    <f:convertNumber type="currency" currencySymbol="$"/>
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column headerText="Acciones">
+                                <p:commandButton icon="pi pi-eye"
+                                               styleClass="rounded-button"
+                                               actionListener="#{ventaController.viewDetails(venta.id)}"
+                                               oncomplete="PF('detallesDialog').show()"
+                                               update=":detallesDialog"/>
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
+                </h:form>
+
+                <p:dialog id="detallesDialog"
+                         header="Detalles de Venta"
+                         widgetVar="detallesDialog"
+                         modal="true"
+                         width="70%">
+                    <p:dataTable value="#{ventaController.detalles}"
+                                var="detalle"
+                                emptyMessage="No hay detalles para mostrar">
+                        <p:column headerText="Producto">
+                            <h:outputText value="#{detalle.producto.nombre}"/>
+                        </p:column>
+                        
+                        <p:column headerText="Cantidad">
+                            <h:outputText value="#{detalle.cantidad}"/>
+                        </p:column>
+                        
+                        <p:column headerText="Precio Unitario">
+                            <h:outputText value="#{detalle.precioUnitario}">
+                                <f:convertNumber type="currency" currencySymbol="$"/>
+                            </h:outputText>
+                        </p:column>
+                        
+                        <p:column headerText="Subtotal">
+                            <h:outputText value="#{detalle.subtotal}">
+                                <f:convertNumber type="currency" currencySymbol="$"/>
+                            </h:outputText>
+                        </p:column>
+                    </p:dataTable>
+                </p:dialog>
+            </div>
+        </ui:define>
+    </ui:composition>
+</html>

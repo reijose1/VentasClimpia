@@ -1,0 +1,8 @@
+com\climpia\ventasclimpia\model\entities\Usuario$UsuarioBuilder.class
+com\climpia\ventasclimpia\model\entities\Producto$ProductoBuilder.class
+com\climpia\ventasclimpia\model\entities\Cliente$ClienteBuilder.class
+com\climpia\ventasclimpia\model\entities\Categoria$CategoriaBuilder.class
+com\climpia\ventasclimpia\model\entities\MedioPago$MedioPagoBuilder.class
+com\climpia\ventasclimpia\model\entities\Detalle$DetalleBuilder.class
+com\climpia\ventasclimpia\model\entities\Pago$PagoBuilder.class
+com\climpia\ventasclimpia\model\entities\Venta$VentaBuilder.class
