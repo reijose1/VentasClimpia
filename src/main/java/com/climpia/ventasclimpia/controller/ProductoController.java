@@ -1,5 +1,6 @@
 package com.climpia.ventasclimpia.controller;
 
+import com.climpia.ventasclimpia.model.entities.Categoria;
 import com.climpia.ventasclimpia.model.entities.Producto;
 import com.climpia.ventasclimpia.service.ProductoService;
 import jakarta.annotation.PostConstruct;
@@ -28,11 +29,16 @@ public class ProductoController implements Serializable {
     private List<Producto> productos;
     private Producto selectedProduct;
     private String searchTerm;
+    private Integer selectedCategoriaId;
     
     @PostConstruct
     public void init() {
         productos = productoService.getAllProducts();
         selectedProduct = new Producto();
+    }
+    
+    public List<Categoria> getCategorias () {
+        return productoService.getAllCategorias();
     }
     
     public void searchProducts() {
@@ -44,9 +50,16 @@ public class ProductoController implements Serializable {
     }
     
     public void saveProduct() {
+        
         try {
+            Categoria selectedCategoria = productoService.getCategoriaById(selectedCategoriaId);
+            if (selectedCategoria == null){
+                throw new RuntimeException("Category not found");
+            }
+            selectedProduct.setIdcat(selectedCategoria);
             if (selectedProduct.getId() == null) {
                 productoService.createProduct(selectedProduct);
+                
                 FacesContext.getCurrentInstance().addMessage(null, 
                     new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Product created successfully"));
             } else {

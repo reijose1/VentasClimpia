@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition template="/templates/template.xhtml">
+        <ui:define name="content">
+            <div class="card">
+                <h2>Gestión de Productos</h2>
+                <h:form id="productosForm">
+                    <p:panel header="Productos">
+                        <p:toolbar>
+                            <p:toolbarGroup>
+                                <p:commandButton value="Nuevo Producto" 
+                                               icon="pi pi-plus"
+                                               action="/views/producto/productoCreate?faces-redirect=true"
+                                               actionListener="#{productoManagedBean.prepareNewProduct()}"/>
+                            </p:toolbarGroup>
+                        </p:toolbar>
+
+                        <p:dataTable id="productosTable" 
+                                   var="producto" 
+                                   value="#{productoManagedBean.productos}"
+                                   paginator="true"
+                                   rows="10"
+                                   paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                   currentPageReportTemplate="Mostrando {startRecord}-{endRecord} de {totalRecords} registros">
+
+                        
+                            <p:column headerText="ID">
+                                <h:outputText value="#{producto.id}"/>
+                            </p:column>
+
+                            <p:column headerText="Nombre">
+                                <h:outputText value="#{producto.nombre}"/>
+                            </p:column>
+
+                            <p:column headerText="Precio">
+                                <h:outputText value="#{producto.precio}">
+                                    <f:convertNumber type="currency" currencySymbol="$"/>
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column headerText="Stock">
+                                <h:outputText value="#{producto.stock}"/>
+                            </p:column>
+
+                            <p:column headerText="Acciones">
+                                <p:commandButton icon="pi pi-pencil"
+                                               styleClass="edit-button rounded-button ui-button-success"
+                                               actionListener="#{productoManagedBean.editProduct(producto)}"
+                                               update=":productoDialog"
+                                               oncomplete="PF('productoDialog').show()"/>
+
+                                <p:commandButton icon="pi pi-trash"
+                                               styleClass="ui-button-danger rounded-button"
+                                               actionListener="#{productoManagedBean.deleteProduct(producto.id)}"
+                                               update="productosTable">
+                                    <p:confirm header="Confirmación" 
+                                             message="¿Está seguro que desea eliminar este producto?" 
+                                             icon="pi pi-exclamation-triangle"/>
+                                </p:commandButton>
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
+                </h:form>
+
+                <p:dialog id="productoDialog"
+                         header="Producto"
+                         widgetVar="productoDialog"
+                         modal="true"
+                         showEffect="fade"
+                         hideEffect="fade"
+                         resizable="false">
+                    <h:form>
+                        <p:panelGrid columns="2">
+                            <p:outputLabel for="nombre" value="Nombre:"/>
+                            <p:inputText id="nombre" value="#{productoManagedBean.selectedProduct.nombre}"/>
+
+                            <p:outputLabel for="precio" value="Precio:"/>
+                            <p:inputNumber id="precio" value="#{productoManagedBean.selectedProduct.precio}" symbol="$" symbolPosition="p"/>
+
+                            <p:outputLabel for="stock" value="Stock:"/>
+                            <p:inputNumber id="stock" value="#{productoManagedBean.selectedProduct.stock}"/>
+                        </p:panelGrid>
+
+                        <p:commandButton value="Guardar"
+                                       icon="pi pi-check"
+                                       actionListener="#{productoManagedBean.saveProduct()}"
+                                       update=":productosForm:productosTable"
+                                       oncomplete="PF('productoDialog').hide()"/>
+
+                        <p:commandButton value="Cancelar"
+                                       icon="pi pi-times"
+                                       onclick="PF('productoDialog').hide()"
+                                       type="button"/>
+                    </h:form>
+                </p:dialog>
+
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                    <p:commandButton value="Sí" type="button" 
+                                   styleClass="ui-confirmdialog-yes" icon="pi pi-check"/>
+                    <p:commandButton value="No" type="button" 
+                                   styleClass="ui-confirmdialog-no ui-button-secondary" 
+                                   icon="pi pi-times"/>
+                </p:confirmDialog>
+            </div>
+        </ui:define>
+    </ui:composition>
+</html>

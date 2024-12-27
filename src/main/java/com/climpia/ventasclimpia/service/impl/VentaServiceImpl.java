@@ -1,8 +1,10 @@
 package com.climpia.ventasclimpia.service.impl;
 
+import com.climpia.ventasclimpia.model.entities.Cliente;
 import com.climpia.ventasclimpia.model.entities.Venta;
 import com.climpia.ventasclimpia.model.entities.Detalle;
 import com.climpia.ventasclimpia.model.entities.Usuario;
+import com.climpia.ventasclimpia.repository.persistence.ClienteCrudRepository;
 import com.climpia.ventasclimpia.repository.persistence.DetalleCrudRepository;
 import com.climpia.ventasclimpia.repository.persistence.VentaCrudRepository;
 import com.climpia.ventasclimpia.service.VentaService;
@@ -21,6 +23,9 @@ public class VentaServiceImpl implements VentaService {
 
     @Inject
     private DetalleCrudRepository detalleCrudRepository;
+    
+    @Inject
+    private ClienteCrudRepository clienteCrudRepository;
 
     @Inject
     private ProductoService productoService;
@@ -81,6 +86,13 @@ public class VentaServiceImpl implements VentaService {
     @Override
     public List<Venta> getSalesByCustomer(Usuario cliente) {
         return ventaCrudRepository.findByCliente(cliente.getId());
+    }
+    
+    @Override
+    public String getCustomer(Integer id) {
+        String clienteN = clienteCrudRepository.findById(id).getNombre();
+        String clienteA = clienteCrudRepository.findById(id).getApellido();
+        return clienteN + " " + clienteA;
     }
 
     @Override

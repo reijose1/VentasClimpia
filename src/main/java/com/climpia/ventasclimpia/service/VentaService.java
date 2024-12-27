@@ -20,4 +20,5 @@ public interface VentaService {
     List<Venta> getSalesByDate(Date fecha);
     List<Venta> getSalesBySeller(String vendedor);
     List<Detalle> getSaleDetails(Integer ventaId);
+    String getCustomer(Integer id);
 }

@@ -1,8 +1,10 @@
 package com.climpia.ventasclimpia.controller;
 
+import com.climpia.ventasclimpia.model.entities.Cliente;
 import com.climpia.ventasclimpia.model.entities.Venta;
 import com.climpia.ventasclimpia.model.entities.Detalle;
 import com.climpia.ventasclimpia.model.entities.Producto;
+import com.climpia.ventasclimpia.service.ClienteService;
 import com.climpia.ventasclimpia.service.VentaService;
 import com.climpia.ventasclimpia.service.ProductoService;
 import jakarta.annotation.PostConstruct;
@@ -33,6 +35,9 @@ public class VentaController implements Serializable {
     @EJB
     private VentaService ventaService;
     
+    @EJB
+    private ClienteService clienteService;
+    
     @Inject
     private ProductoService productoService;
     
@@ -42,6 +47,8 @@ public class VentaController implements Serializable {
     private Detalle newDetalle;
     private Date searchDate;
     private List<Producto> productos;
+    private Cliente cliente;
+    private List<Cliente> clientes;
     
     @PostConstruct
     public void init() {
@@ -50,6 +57,11 @@ public class VentaController implements Serializable {
         detalles = new ArrayList<>();
         newDetalle = new Detalle();
         productos = productoService.getAllProducts();
+        clientes = clienteService.getAllCustomers();
+    }
+    
+    public String getCliente(Integer id){
+        return ventaService.getCustomer(id);
     }
     
     public void prepareNewSale() {

@@ -15,6 +15,7 @@ E:\NetBeansProjects\VentasClimpia\src\main\java\com\climpia\ventasclimpia\model\
 E:\NetBeansProjects\VentasClimpia\src\main\java\com\climpia\ventasclimpia\model\entities\Venta.java
 E:\NetBeansProjects\VentasClimpia\src\main\java\com\climpia\ventasclimpia\repository\GenericRepository.java
 E:\NetBeansProjects\VentasClimpia\src\main\java\com\climpia\ventasclimpia\repository\persistence\AbstractCrudRepository.java
+E:\NetBeansProjects\VentasClimpia\src\main\java\com\climpia\ventasclimpia\repository\persistence\CategoriaCrudRepository.java
 E:\NetBeansProjects\VentasClimpia\src\main\java\com\climpia\ventasclimpia\repository\persistence\ClienteCrudRepository.java
 E:\NetBeansProjects\VentasClimpia\src\main\java\com\climpia\ventasclimpia\repository\persistence\DetalleCrudRepository.java
 E:\NetBeansProjects\VentasClimpia\src\main\java\com\climpia\ventasclimpia\repository\persistence\ProductoCrudRepository.java

@@ -1,5 +1,6 @@
 package com.climpia.ventasclimpia.service;
 
+import com.climpia.ventasclimpia.model.entities.Categoria;
 import com.climpia.ventasclimpia.model.entities.Producto;
 import java.util.List;
 
@@ -17,4 +18,6 @@ public interface ProductoService {
     List<Producto> searchProductsByName(String name);
     void updateProductStock(Integer productId, Integer quantity);
     boolean isProductAvailable(Integer productId, Integer quantity);
+    List<Categoria> getAllCategorias ();
+    public Categoria getCategoriaById(Integer selectedCategoriaId);
 }

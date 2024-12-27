@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition template="/templates/template.xhtml">
+        <ui:define name="content">
+            <div class="card">
+                <h2>Nueva Venta</h2>
+                <h:form id="ventaForm">
+                    <p:panel header="Datos de la Venta">
+                        <p:messages id="messages" showDetail="true"/>
+                        
+                        <p:panelGrid columns="2" styleClass="ui-noborder">
+                            <p:outputLabel for="cliente" value="Cliente:"/>
+                            <p:selectOneMenu id="cliente" value="#{ventaManagedBean.getCliente(cliente.id)}">
+                                <f:selectItem itemLabel="Seleccione un cliente" noSelectionOption="true"/>
+                                <f:selectItems value="#{ventaController.clientes}" 
+                                             var="cliente" 
+                                             itemLabel="#{cliente.nombre}"
+                                             itemValue="#{cliente}"/>
+                            </p:selectOneMenu>
+                            
+                            <p:outputLabel value="Fecha:"/>
+                            <p:calendar value="#{ventaController.selectedVenta.fecha}" pattern="dd/MM/yyyy" readonlyInput="true"/>
+                        </p:panelGrid>
+                        
+                        <p:panel header="Agregar Producto" style="margin-top: 20px;">
+                            <p:panelGrid columns="4" styleClass="ui-noborder">
+                                <p:outputLabel for="producto" value="Producto:"/>
+                                <p:selectOneMenu id="producto" value="#{ventaController.newDetalle.producto}">
+                                    <f:selectItem itemLabel="Seleccione un producto" noSelectionOption="true"/>
+                                    <f:selectItems value="#{ventaController.productos}" 
+                                                 var="producto" 
+                                                 itemLabel="#{producto.nombre}"
+                                                 itemValue="#{producto}"/>
+                                </p:selectOneMenu>
+                                
+                                <p:outputLabel for="cantidad" value="Cantidad:"/>
+                                <p:inputNumber id="cantidad" value="#{ventaController.newDetalle.cantidad}" decimalPlaces="0"/>
+                                
+                                <p:commandButton value="Agregar"
+                                               actionListener="#{ventaController.addDetail}"
+                                               update="detallesTable messages"
+                                               icon="pi pi-plus"/>
+                            </p:panelGrid>
+                        </p:panel>
+                        
+                        <p:dataTable id="detallesTable"
+                                   var="detalle"
+                                   value="#{ventaController.detalles}"
+                                   style="margin-top: 20px;"
+                                   emptyMessage="No hay productos agregados">
+                            <p:column headerText="Producto">
+                                <h:outputText value="#{detalle.producto.nombre}"/>
+                            </p:column>
+                            
+                            <p:column headerText="Cantidad">
+                                <h:outputText value="#{detalle.cantidad}"/>
+                            </p:column>
+                            
+                            <p:column headerText="Precio Unitario">
+                                <h:outputText value="#{detalle.precioUnitario}">
+                                    <f:convertNumber type="currency" currencySymbol="$"/>
+                                </h:outputText>
+                            </p:column>
+                            
+                            <p:column headerText="Subtotal">
+                                <h:outputText value="#{detalle.subtotal}">
+                                    <f:convertNumber type="currency" currencySymbol="$"/>
+                                </h:outputText>
+                            </p:column>
+                            
+                            <p:column style="width:50px">
+                                <p:commandButton icon="pi pi-trash"
+                                               actionListener="#{ventaController.removeDetail(detalle)}"
+                                               update="detallesTable messages"
+                                               styleClass="ui-button-danger rounded-button"/>
+                            </p:column>
+                            
+                            <f:facet name="footer">
+                                <h:outputText value="Total: "/>
+                                <h:outputText value="#{ventaController.selectedVenta.total}">
+                                    <f:convertNumber type="currency" currencySymbol="$"/>
+                                </h:outputText>
+                            </f:facet>
+                        </p:dataTable>
+                        
+                        <p:toolbar style="margin-top: 20px;">
+                            <p:toolbarGroup>
+                                <p:commandButton value="Guardar"
+                                               icon="pi pi-check"
+                                               actionListener="#{ventaController.saveSale}"
+                                               update="messages"/>
+                                               
+                                <p:commandButton value="Cancelar"
+                                               icon="pi pi-times"
+                                               action="/views/venta/list?faces-redirect=true"
+                                               immediate="true"
+                                               styleClass="ui-button-secondary"/>
+                            </p:toolbarGroup>
+                        </p:toolbar>
+                    </p:panel>
+                </h:form>
+            </div>
+        </ui:define>
+    </ui:composition>
+</html>

@@ -1,6 +1,8 @@
 package com.climpia.ventasclimpia.service.impl;
 
+import com.climpia.ventasclimpia.model.entities.Categoria;
 import com.climpia.ventasclimpia.model.entities.Producto;
+import com.climpia.ventasclimpia.repository.persistence.CategoriaCrudRepository;
 import com.climpia.ventasclimpia.repository.persistence.ProductoCrudRepository;
 import com.climpia.ventasclimpia.service.ProductoService;
 import jakarta.ejb.Stateless;
@@ -17,6 +19,9 @@ public class ProductoServiceImpl implements ProductoService {
 
     @Inject
     private ProductoCrudRepository productoCrudRepository;
+    
+    @Inject
+    private CategoriaCrudRepository categoriaCrudRepository;
 
     @Override
     @Transactional
@@ -73,5 +78,15 @@ public class ProductoServiceImpl implements ProductoService {
     public boolean isProductAvailable(Integer productId, Integer quantity) {
         Producto producto = getProduct(productId);
         return producto != null && producto.getStock() >= quantity;
+    }
+
+    @Override
+    public List<Categoria> getAllCategorias() {
+        return categoriaCrudRepository.findAllCategorias();
+    }
+
+    @Override
+    public Categoria getCategoriaById(Integer selectedCategoriaId) {
+        return categoriaCrudRepository.findById(selectedCategoriaId);
     }
 }
